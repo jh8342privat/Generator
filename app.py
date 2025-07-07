@@ -485,10 +485,7 @@ def main():
         return None
 
     if not toc_entries:
-        st.write("Keine Abstimmungen im Inhaltsverzeichnis gefunden.")
-        return
-    if not toc_entries:
-        st.write("Keine Abstimmungen im Inhaltsverzeichnis gefunden.")
+        st.write("Keine Abstimmungen im Inhaltsverzeichnis gefunden. Hat das PDF das richtige Format?")
         return
     
     num, heading = get_selected_entry(toc_entries)
@@ -516,7 +513,7 @@ st.subheader("Wie funktioniert der Generator?")
 
 # Schritt 1
 st.markdown("1. Schritt: PDF mit Abstimmungsergebnissen hochladen \n")
-st.markdown("**WICHTIG:** Bitte lade die **englische Version** der PDF hoch. Du erkennst sie an der Endung **`RCV_EN.pdf`**.")
+st.markdown("**WICHTIG:** Bitte lade das PDF mit den **`Ergebnis der namentlichen Abstimmungen`** hoch.")
 
 with st.expander("Wo finde ich die PDF?"):
     st.markdown("""
