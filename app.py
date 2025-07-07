@@ -475,7 +475,6 @@ def apply_vote_corrections(data, correction_text):
 
 def main():
     #pdf_path = input("Pfad oder Name der PDF-Datei: ").strip()
-    st.header("Abstimmungsbild Generator")
 
     text = extract_pdf_text()
     if text:
@@ -512,7 +511,45 @@ def main():
         print(auswertung)
         generate_image(auswertung)
 
+st.title("Abstimmungsbild Generator")
+st.header("Wie funktioniert der Generator?")
 
+st.title("Abstimmungsgrafik Generator")
+
+# Schritt 1
+st.subheader("1. Schritt: PDF mit Abstimmungsergebnissen hochladen")
+st.markdown("**WICHTIG:** Bitte lade die **englische Version** der PDF hoch. Du erkennst sie an der Endung **`RCV_EN.pdf`**.")
+
+with st.expander("Wo finde ich die PDF?"):
+    st.markdown("""
+1. Gehe zu [europarl.europa.eu/plenary/en/votes.html](https://www.europarl.europa.eu/plenary/en/votes.html)  
+2. Klicke auf **„Results of votes“**  
+3. Wähle die **Woche** aus, in der die Abstimmung stattgefunden hat  
+4. Klicke beim entsprechenden **Tag** unter „Roll-Call Votes“ auf **„PDF“**  
+    *(z. B. [Beispiel-PDF](https://www.europarl.europa.eu/doceo/document/PV-10-2025-06-16-RCV_EN.pdf))*  
+5. Speichere die PDF-Datei auf deinem Rechner
+""")
+
+uploaded_pdf = st.file_uploader("PDF hochladen", type=["pdf"])
+
+# Schritt 2
+st.subheader("2. Schritt: Titel festlegen")
+title = st.text_input("Titel für die Grafik eingeben", placeholder="z. B. 'Abstimmung zum Klimagesetz'")
+
+# Schritt 3 (optional)
+st.subheader("3. Schritt (optional): Schriftgröße für Überschrift festlegen")
+font_size = st.slider("Schriftgröße", min_value=20, max_value=80, value=48)
+
+# Schritt 4
+st.subheader("4. Schritt: Grafik erstellen")
+st.markdown("Wenn die Vorschau passt, klicke auf **Generieren**, um das finale Bild zu erzeugen.")
+
+st.header("Bild generieren")
 main()
+
+
+
+
+
     
 
