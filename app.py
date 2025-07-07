@@ -512,12 +512,10 @@ def main():
         generate_image(auswertung)
 
 st.title("Abstimmungsbild Generator")
-st.header("Wie funktioniert der Generator?")
-
-st.title("Abstimmungsgrafik Generator")
+st.subheader("Wie funktioniert der Generator?")
 
 # Schritt 1
-st.subheader("1. Schritt: PDF mit Abstimmungsergebnissen hochladen")
+st.markdown("1. Schritt: PDF mit Abstimmungsergebnissen hochladen \n")
 st.markdown("**WICHTIG:** Bitte lade die **englische Version** der PDF hoch. Du erkennst sie an der Endung **`RCV_EN.pdf`**.")
 
 with st.expander("Wo finde ich die PDF?"):
@@ -533,18 +531,16 @@ with st.expander("Wo finde ich die PDF?"):
 uploaded_pdf = st.file_uploader("PDF hochladen", type=["pdf"])
 
 # Schritt 2
-st.subheader("2. Schritt: Titel festlegen")
-title = st.text_input("Titel für die Grafik eingeben", placeholder="z. B. 'Abstimmung zum Klimagesetz'")
+st.markdown("2. Schritt: Titel festlegen")
 
 # Schritt 3 (optional)
-st.subheader("3. Schritt (optional): Schriftgröße für Überschrift festlegen")
-font_size = st.slider("Schriftgröße", min_value=20, max_value=80, value=48)
+st.markdown("3. Schritt (optional): Schriftgröße für Überschrift festlegen")
 
 # Schritt 4
-st.subheader("4. Schritt: Grafik erstellen")
+st.markdown("4. Schritt: Grafik erstellen \n")
 st.markdown("Wenn die Vorschau passt, klicke auf **Generieren**, um das finale Bild zu erzeugen.")
 
-st.header("Bild generieren")
+st.subheader("Bild generieren")
 main()
 
 
