@@ -537,7 +537,7 @@ st.markdown("4. Schritt: Grafik erstellen \n")
 st.markdown("Wenn die Vorschau passt, klicke auf **Generieren**, um das finale Bild zu erzeugen.")
 
 st.subheader("Bild generieren")
-st.write("*(Achtung: Wenn syntaktisch schwierige Nachname (z.B. Strack-Zimmermann oder v. d. Schulenberg) ihre Abstimmung korrigieren wird das mglw. nicht korrekt dargestellt.)*")
+st.write("*(Achtung: Wenn syntaktisch schwierige Nachname (z.B. Strack-Zimmermann oder v. d. Schulenburg) ihre Abstimmung korrigieren wird das mglw. nicht korrekt dargestellt.)*")
 main()
 
 
