@@ -528,8 +528,6 @@ with st.expander("Wo finde ich die PDF?"):
 5. Speichere die PDF-Datei auf deinem Rechner
 """)
 
-uploaded_pdf = st.file_uploader("PDF hochladen", type=["pdf"])
-
 # Schritt 2
 st.markdown("2. Schritt: Titel festlegen")
 
