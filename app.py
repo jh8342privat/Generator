@@ -19,11 +19,11 @@ PADDING = 12
 LINE_HEIGHT = 35
 ICON_SIZE = 32
 REC_SIZE = 10
-FONT_PATH = "/Users/josihuebner/Library/Fonts/PTSansProCondRg.OTF"  # oder "arial.ttf"
-FONT2 = "/Users/josihuebner/Library/Fonts/PTSansProXBd.OTF"
+FONT_PATH = "PTSansProCondRg.OTF"  # oder "arial.ttf"
+FONT2 = "Fonts/PTSansProXBd.OTF"
 FONT_SIZE = 28
 FONT_SIZE2 = 42
-LOGO_PATH = "/Users/josihuebner/Downloads/logos"  # Verzeichnis mit Logos als PNG
+LOGO_PATH = "logos"  # Verzeichnis mit Logos als PNG
 COL_WIDTH = 270
 
 # Farben
@@ -502,7 +502,7 @@ def main():
         print(f"\nAbstimmungsergebnis für: {num} – {heading}\n")
         result, text2 = vote_result(text, f"{num} {heading.strip()}")
 
-        mep_list, mep_list2 = parse_abgeordnete_from_file('/Users/josihuebner/Documents/germans.xml')
+        mep_list, mep_list2 = parse_abgeordnete_from_file('germans.xml')
         auswertung = auswertung_abstimmung_sortiert(mep_list, result, titel)
 
         if text2 is not None:
