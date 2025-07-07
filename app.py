@@ -1,5 +1,4 @@
 import streamlit as st
-import pdfplumber
 import re
 from collections import defaultdict
 from PIL import Image, ImageDraw, ImageFont
