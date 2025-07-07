@@ -536,6 +536,7 @@ st.markdown("4. Schritt: Grafik erstellen \n")
 st.markdown("Wenn die Vorschau passt, klicke auf **Generieren**, um das finale Bild zu erzeugen.")
 
 st.subheader("Bild generieren")
+st.markdown("<span style='font-size:12px; font-style:italic;'>Achtung: Wenn syntaktisch schwierige Nachname (z.B. Strack-Zimmermann oder v. d. Schulenberg) ihre Abstimmung korrigieren wird das mglw. nicht korrekt dargestellt.</span>", unsafe_allow_html=True)
 main()
 
 
