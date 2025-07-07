@@ -507,6 +507,7 @@ def main():
             
         print(auswertung)
         generate_image(auswertung)
+        st.write("*(Achtung: Wenn syntaktisch schwierige Nachname (z.B. Strack-Zimmermann oder v. d. Schulenberg) ihre Abstimmung korrigieren wird das mglw. nicht korrekt dargestellt.)*")
 
 st.title("Abstimmungsbild Generator")
 st.subheader("Wie funktioniert der Generator?")
