@@ -322,9 +322,6 @@ def draw_block(draw, persons, label, y_offset, icon_color, font, font2, font3, l
                     
                     if person['name'] == "Oetjen":
                         name = "Oetje J.-C."
-
-                    if person['name'] == "Rackete":
-                        person['partei'] = "Linke"
                         
                 logo = logos.get(person["partei"], None)
 
