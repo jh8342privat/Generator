@@ -10,6 +10,7 @@ import fitz
 import requests
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
+import io
 
 # Konfiguration
 MAX_WIDTH = 70
