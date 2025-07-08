@@ -427,7 +427,9 @@ def generate_image(data, output_path="sharepic.png"):
     img = img.crop((0, 0, img.width, y + 2 * LINE_HEIGHT))  # Bild kürzen
     st.image(img, caption="Vorschau", use_container_width=True)
     if st.button("Bild generieren"):
-        img.show()
+        img_bytes = io.BytesIO()
+        img.save(img_bytes, format="PNG")
+        img_bytes.seek(0)
     
 def apply_vote_corrections(data, correction_text):
     updated = deepcopy(data)
