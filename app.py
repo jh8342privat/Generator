@@ -515,7 +515,7 @@ st.subheader("Wie funktioniert der Generator?")
 
 # Schritt 1
 st.markdown("1. Schritt: PDF mit Abstimmungsergebnissen hochladen \n")
-st.markdown("**WICHTIG:** Bitte lade das PDF mit den **Ergebnis der namentlichen Abstimmungen** hoch.")
+st.markdown("**WICHTIG:** Bitte lade das PDF in der **ENGLISCHEN VERSION** hoch. Das ist an der Endung **`RCV_EN.pdf`** zu erkennen.")
 
 with st.expander("Wo finde ich die PDF?"):
     st.markdown("""
