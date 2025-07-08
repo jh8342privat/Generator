@@ -527,13 +527,14 @@ with st.expander("Wo finde ich die PDF?"):
 """)
 
 # Schritt 2
-st.markdown("2. Schritt: Titel festlegen")
+st.markdown("2. Abstimmung auswählen")
+st.markdown("3. Schritt: Titel festlegen")
 
 # Schritt 3 (optional)
-st.markdown("3. Schritt (optional): Schriftgröße für Überschrift festlegen")
+st.markdown("4. Schritt (optional): Schriftgröße für Überschrift festlegen")
 
 # Schritt 4
-st.markdown("4. Schritt: Grafik erstellen \n")
+st.markdown("5. Schritt: Grafik erstellen \n")
 st.markdown("Wenn die Vorschau passt, klicke auf **Generieren**, um das finale Bild zu erzeugen.")
 
 st.subheader("Bild generieren")
