@@ -275,6 +275,8 @@ def auswertung_abstimmung_sortiert(
     for entscheidung in ["ja", "nein", "enthaltung"]:
         for fraktion, namen in abstimmung.get(entscheidung, {}).items():
             for name in namen:
+                if name == "von der Schulenburg":
+                    name = "Von Der Schulenburg"
                 if name in abgeordnete_map:
                     abgeordneter = abgeordnete_map[name]
                     ergebnis[entscheidung].append({
