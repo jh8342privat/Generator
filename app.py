@@ -507,7 +507,7 @@ def main():
     if heading:
 
         print(f"\nAbstimmungsergebnis für: {num} – {heading}\n")
-        result, text2 = vote_result(text, f"{num} {heading.strip()}")
+        result, text2, *_ = vote_result(text, f"{num} {heading.strip()}")
 
         mep_list, mep_list2 = parse_abgeordnete_from_file('germans.xml')
         auswertung = auswertung_abstimmung_sortiert(mep_list, result, titel)
