@@ -319,6 +319,9 @@ def draw_block(draw, persons, label, y_offset, icon_color, font, font2, font3, l
                 if True:
                     if person['name'] == "Von Der Schulenburg":
                         name = "v. d. Schulenburg M."
+                        
+                    if person['name'] == "von der Schulenburg":
+                        name = "v. d. Schulenburg M."
                     
                     if person['name'] == "Strack-Zimmermann":
                         name = "Strack-Zimmermann M.-A."
