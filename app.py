@@ -20,7 +20,7 @@ LINE_HEIGHT = 35
 ICON_SIZE = 32
 REC_SIZE = 10
 FONT_PATH = "PTSansProCondRg.OTF"  # oder "arial.ttf"
-FONT2 = "PTSansProXBd.OTF"
+FONT2 = "Fonts/PTSansProXBd.OTF"
 FONT_SIZE = 28
 FONT_SIZE2 = 42
 LOGO_PATH = "logos"  # Verzeichnis mit Logos als PNG
@@ -36,7 +36,7 @@ COLOR_MAP = {
 
 parteien_reihenfolge = [
             "CDU", "CSU", "SPD", "Grune", "FDP",
-            "Linke", "AfD", "fw", 'BSW', 'Die Partei', "Piratenpartei",
+            "Linke", "AfD", "fw", 'BSW', "Piratenpartei",
             "ODP", "Tierschutzpartei", "Volt", "Sonstige"
         ]
 
@@ -82,23 +82,15 @@ def display_choices(toc_entries):
 def extract_pdf_text():
     uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     text = ""
-    
+    text1 = ""
     if uploaded_file is not None:
+        # Load PDF into PyMuPDF from memory
         pdf_stream = BytesIO(uploaded_file.read())
         doc = fitz.open(stream=pdf_stream, filetype="pdf")
 
+        # Extract and display text from each page
         for page_num, page in enumerate(doc, start=1):
-            blocks = page.get_text("blocks")  # List of (x0, y0, x1, y1, text, block_no, block_type)
-            page_height = page.rect.height
-
-            # Adjust this threshold to exclude bottom ~10% of the page (likely footer)
-            footer_threshold = page_height * 0.9  
-
-            for b in blocks:
-                x0, y0, x1, y1, block_text, *_ = b
-                if y0 < footer_threshold:  # Ignore blocks that start in the footer
-                    text += block_text + "\n"
-        
+            text += page.get_text()
         return text
 
 def get_selected_entry(toc_entries):
@@ -114,23 +106,28 @@ def crop_text_by_pattern(text, start_index, end_pattern):
             break
         cropped_lines.append(line)
     return "\n".join(cropped_lines)
-    
+
 def split_text_on_marker(text):
+    # Normalize line endings
+    marker_start = """ПОПРАВКИ В ПОДАДЕНИТЕ ГЛАСОВЕ И НАМЕРЕНИЯ ЗА ГЛАСУВАНЕ - CORRECCIONES E INTENCIONES DE VOTO - OPRAVY 
+HLASOVÁNÍ A SDĚLENÍ O ÚMYSLU HLASOVAT - STEMMERETTELSER OG -INTENTIONER - BERICHTIGUNGEN DES 
+STIMMVERHALTENS UND BEABSICHTIGTES STIMMVERHALTEN - HÄÄLETUSE PARANDUSED JA HÄÄLETUSKAVATSUSED - 
+ΔΙΟΡΘΩΣΕΙΣ ΚΑΙ ΠΡΟΘΕΣΕΙΣ ΨΗΦΟΥ - CORRECTIONS TO VOTES AND VOTING INTENTIONS - CORRECTIONS ET INTENTIONS DE 
+VOTE - CEARTÚCHÁIN AR AN VÓTA AGUS INTINNÍ VÓTÁLA - IZMJENE DANIH GLASOVA I NAMJERE GLASAČA - CORREZIONI E 
+INTENZIONI DI VOTO - BALSOJUMU LABOJUMI UN NODOMI BALSOT - BALSAVIMO PATAISYMAI IR KETINIMAI - SZAVAZATOK 
+HELYESBÍTÉSEI ÉS SZAVAZÁSI SZÁNDÉKOK - KORREZZJONIJIET U INTENZJONIJIET GĦALL-VOT - RECTIFICATIES STEMGEDRAG/ 
+VOORGENOMEN STEMGEDRAG - KOREKTY GŁOSOWANIA I ZAMIAR GŁOSOWANIA - CORREÇÕES E INTENÇÕES DE VOTO - 
+CORECTĂRI ŞI INTENŢII DE VOT - OPRAVY HLASOVANIA A ZÁMERY PRI HLASOVANÍ - POPRAVKI IN NAMERE GLASOVANJA - 
+ÄÄNESTYSKÄYTTÄYTYMISTÄ JA ÄÄNESTYSAIKEITA KOSKEVAT ILMOITUKSET - RÄTTELSER/AVSIKTSFÖRKLARINGAR TILL 
+AVGIVNA RÖSTER"""
     text = text.replace('\r\n', '\n')
-    
-    # Regex für Marker, optional case-insensitive
-    pattern = r'(?i)BERICHTIGUNGEN DES STIMMVERHALTENS.*?STIMMVERHALTEN'  # passt auf Marker-Zeile
-    
-    match = re.search(pattern, text)
-    if not match:
+    index = text.find(marker_start)
+    if index == -1:
         return text.strip(), None
     else:
-        index = match.start()
-        end_index = match.end()
         part_1 = text[:index].strip()
-        part_2 = text[end_index:].strip()
+        part_2 = text[index + len(marker_start):].strip()
         return part_1, part_2
-
 
 def parse_vote_blocks(entries):
     result = {'+': defaultdict(list), '-': defaultdict(list), '0': defaultdict(list)}
@@ -155,21 +152,29 @@ def parse_vote_blocks(entries):
     return {symbol: dict(groups) for symbol, groups in result.items()}
 
 def vote_result(text, heading):
+    
     known_groups = [
         "EPP", "S&D", "Renew", "Greens", "ID", "The Left", "ECR", "NI"
     ]
 
     # Finde alle Positionen des Headings im Text
+    print('HEADING -------------------------')
+    print(heading)
     pattern = re.sub(r'\\ ', r'\\s+', re.escape(heading))
 # Suche nach dem flexiblen Pattern im Text
     matches = list(re.finditer(pattern, text))
+    print(matches)
+    
     if len(matches) < 2:
         return "⚠️ Heading nicht zweimal im Text gefunden."
 
     # Nimm das zweite Vorkommen
     start = matches[1].end()
+ 
     text = crop_text_by_pattern(text, start, r"^\d+\.\d+ A\d{2}-\d{4}/\d{4}")
+
     text, text2 = split_text_on_marker(text)
+
     pattern = r"^\d+\s*([+-0∅])\s*(.*?)(?=^\d+\s*[+-0∅]|\Z)"
     matches = re.findall(pattern, text, flags=re.DOTALL | re.MULTILINE)
     stimmen = parse_vote_blocks(matches)
@@ -298,7 +303,6 @@ def draw_block(draw, persons, label, y_offset, icon_color, font, font2, font3, l
     #y_offset += LINE_HEIGHT
     persons.insert(0, {'name': '', 'vorname': '', 'partei': ''}) 
     rows = math.ceil(len(persons) / COLUMN_COUNT)
-    print(persons)
 
     for col in range(COLUMN_COUNT):
             for row in range(rows):
@@ -324,7 +328,6 @@ def draw_block(draw, persons, label, y_offset, icon_color, font, font2, font3, l
                     
                     if person['name'] == "Oetjen":
                         name = "Oetje J.-C."
-                        
                 logo = logos.get(person["partei"], None)
 
                 x = PADDING + col * COL_WIDTH
@@ -428,22 +431,14 @@ def generate_image(data, output_path="sharepic.png"):
 
     img = img.crop((0, 0, img.width, y + 2 * LINE_HEIGHT))  # Bild kürzen
     st.image(img, caption="Vorschau", use_container_width=True)
-    img_bytes = io.BytesIO()
-    img.save(img_bytes, format="PNG")        
-    img_bytes.seek(0)
-    st.download_button(
-        label="Download",
-        data=img_bytes,
-        file_name="abstimmung.png",
-        mime="image/png"
-    )
+    if st.button("Bild generieren"):
+        img.show()
     
 def apply_vote_corrections(data, correction_text):
     updated = deepcopy(data)
 
     # Stimmenblöcke extrahieren
     blocks = re.split(r"(?=\n[+\-0])", correction_text.strip())
-    print(blocks)
     vote_map = {'+': 'ja', '-': 'nein', '0': 'enthaltung'}
 
     # Hilfsfunktion: Finde Person im Dict
@@ -451,9 +446,7 @@ def apply_vote_corrections(data, correction_text):
         for key in ['ja', 'nein', 'enthaltung', 'nicht_abgestimmt']:
             for entry in updated[key]:
                 full_name = f"{entry['vorname']} {entry['name']}".lower()
-                print(full_name)
                 if full_name == person.lower():
-                    print('FOUND')
                     updated[key].remove(entry)
                     updated[section].append(entry)
                     return
