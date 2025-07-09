@@ -114,28 +114,23 @@ def crop_text_by_pattern(text, start_index, end_pattern):
             break
         cropped_lines.append(line)
     return "\n".join(cropped_lines)
-
+    
 def split_text_on_marker(text):
-    # Normalize line endings
-    marker_start = """ПОПРАВКИ В ПОДАДЕНИТЕ ГЛАСОВЕ И НАМЕРЕНИЯ ЗА ГЛАСУВАНЕ - CORRECCIONES E INTENCIONES DE VOTO - OPRAVY 
-HLASOVÁNÍ A SDĚLENÍ O ÚMYSLU HLASOVAT - STEMMERETTELSER OG -INTENTIONER - BERICHTIGUNGEN DES 
-STIMMVERHALTENS UND BEABSICHTIGTES STIMMVERHALTEN - HÄÄLETUSE PARANDUSED JA HÄÄLETUSKAVATSUSED - 
-ΔΙΟΡΘΩΣΕΙΣ ΚΑΙ ΠΡΟΘΕΣΕΙΣ ΨΗΦΟΥ - CORRECTIONS TO VOTES AND VOTING INTENTIONS - CORRECTIONS ET INTENTIONS DE 
-VOTE - CEARTÚCHÁIN AR AN VÓTA AGUS INTINNÍ VÓTÁLA - IZMJENE DANIH GLASOVA I NAMJERE GLASAČA - CORREZIONI E 
-INTENZIONI DI VOTO - BALSOJUMU LABOJUMI UN NODOMI BALSOT - BALSAVIMO PATAISYMAI IR KETINIMAI - SZAVAZATOK 
-HELYESBÍTÉSEI ÉS SZAVAZÁSI SZÁNDÉKOK - KORREZZJONIJIET U INTENZJONIJIET GĦALL-VOT - RECTIFICATIES STEMGEDRAG/ 
-VOORGENOMEN STEMGEDRAG - KOREKTY GŁOSOWANIA I ZAMIAR GŁOSOWANIA - CORREÇÕES E INTENÇÕES DE VOTO - 
-CORECTĂRI ŞI INTENŢII DE VOT - OPRAVY HLASOVANIA A ZÁMERY PRI HLASOVANÍ - POPRAVKI IN NAMERE GLASOVANJA - 
-ÄÄNESTYSKÄYTTÄYTYMISTÄ JA ÄÄNESTYSAIKEITA KOSKEVAT ILMOITUKSET - RÄTTELSER/AVSIKTSFÖRKLARINGAR TILL 
-AVGIVNA RÖSTER"""
     text = text.replace('\r\n', '\n')
-    index = text.find(marker_start)
-    if index == -1:
+    
+    # Regex für Marker, optional case-insensitive
+    pattern = r'(?i)BERICHTIGUNGEN DES STIMMVERHALTENS.*?STIMMVERHALTEN'  # passt auf Marker-Zeile
+    
+    match = re.search(pattern, text)
+    if not match:
         return text.strip(), None
     else:
+        index = match.start()
+        end_index = match.end()
         part_1 = text[:index].strip()
-        part_2 = text[index + len(marker_start):].strip()
+        part_2 = text[end_index:].strip()
         return part_1, part_2
+
 
 def parse_vote_blocks(entries):
     result = {'+': defaultdict(list), '-': defaultdict(list), '0': defaultdict(list)}
