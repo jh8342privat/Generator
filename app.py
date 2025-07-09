@@ -140,7 +140,7 @@ def parse_vote_blocks(entries):
             if not line:
                 continue
             
-            group_match = re.match(r'^([A-Za-z/&.\- ]+):$', line)
+            group_match = re.match(r'([A-Za-z/&.\- ]+):$', line)
             if group_match:
                 current_group = group_match.group(1).strip()
                 continue
