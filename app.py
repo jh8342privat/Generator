@@ -82,15 +82,23 @@ def display_choices(toc_entries):
 def extract_pdf_text():
     uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     text = ""
-    text1 = ""
+    
     if uploaded_file is not None:
-        # Load PDF into PyMuPDF from memory
         pdf_stream = BytesIO(uploaded_file.read())
         doc = fitz.open(stream=pdf_stream, filetype="pdf")
 
-        # Extract and display text from each page
         for page_num, page in enumerate(doc, start=1):
-            text += page.get_text()
+            blocks = page.get_text("blocks")  # List of (x0, y0, x1, y1, text, block_no, block_type)
+            page_height = page.rect.height
+
+            # Adjust this threshold to exclude bottom ~10% of the page (likely footer)
+            footer_threshold = page_height * 0.9  
+
+            for b in blocks:
+                x0, y0, x1, y1, block_text, *_ = b
+                if y0 < footer_threshold:  # Ignore blocks that start in the footer
+                    text += block_text + "\n"
+        
         return text
 
 def get_selected_entry(toc_entries):
