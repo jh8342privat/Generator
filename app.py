@@ -160,11 +160,9 @@ def vote_result(text, heading):
     ]
 
     # Finde alle Positionen des Headings im Text
-    print('HEADING -------------------------')
-    print(heading)
-    matches = list(re.finditer(re.escape(heading), text))
-    print(matches)
-    print(text[2200:2400])
+    pattern = re.sub(r'\\ ', r'\\s+', re.escape(heading))
+# Suche nach dem flexiblen Pattern im Text
+    matches = list(re.finditer(pattern, text))
     if len(matches) < 2:
         return "⚠️ Heading nicht zweimal im Text gefunden."
 
