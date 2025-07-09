@@ -36,7 +36,7 @@ COLOR_MAP = {
 
 parteien_reihenfolge = [
             "CDU", "CSU", "SPD", "Grune", "FDP",
-            "Linke", "AfD", "fw", 'BSW', "Piratenpartei",
+            "Linke", "AfD", "fw", 'BSW', "Die Partei", "Piratenpartei",
             "ODP", "Tierschutzpartei", "Volt", "Sonstige"
         ]
 
