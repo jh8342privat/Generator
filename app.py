@@ -512,7 +512,47 @@ def main():
             auswertung = apply_vote_corrections(auswertung, text2)
             for entscheidung in ["ja", "nein", "enthaltung", "nicht_abgestimmt"]:
                 auswertung[entscheidung].sort(key=partei_sort_key)
-            
+        data = auswertung
+        seen = set()
+        unique_ja = []
+        unique_nein = []
+        unique_e = []
+        unique_n = []
+        seen = set()
+
+        for entry in data['ja']:
+            entry_tuple = tuple(entry.items())
+            if entry_tuple not in seen:
+                seen.add(entry_tuple)
+                unique_ja.append(entry)
+
+        data['ja'] = unique_ja
+
+        for entry in data['nein']:
+            entry_tuple = tuple(entry.items())
+            if entry_tuple not in seen:
+                seen.add(entry_tuple)
+                unique_nein.append(entry)
+
+        data['nein'] = unique_nein
+
+        for entry in data['enthaltung']:
+            entry_tuple = tuple(entry.items())
+            if entry_tuple not in seen:
+                seen.add(entry_tuple)
+                unique_e.append(entry)
+
+        data['enthaltung'] = unique_e
+
+        for entry in data['nicht_abgestimmt']:
+            entry_tuple = tuple(entry.items())
+            if entry_tuple not in seen:
+                seen.add(entry_tuple)
+                unique_n.append(entry)
+
+        data['nicht_abgestimmt'] = unique_n
+
+        generate_image(data)  
         print(auswertung)
         generate_image(auswertung)
         st.write("*(Achtung: Wenn syntaktisch schwierige Nachname (z.B. Strack-Zimmermann oder v. d. Schulenberg) ihre Abstimmung korrigieren wird das mglw. nicht korrekt dargestellt.)*")
