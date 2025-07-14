@@ -14,7 +14,7 @@ import io
 
 # Konfiguration
 MAX_WIDTH = 70
-COLUMN_COUNT = 4
+COLUMN_COUNT = 3
 PADDING = 12
 LINE_HEIGHT = 35
 ICON_SIZE = 32
